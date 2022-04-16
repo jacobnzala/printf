@@ -7,3 +7,10 @@ Applying variadic functions to a big project while learning to collaborate with 
 
 
 printf function and all its complexities
+
+
+Authors:
+
+Jacob Nzala
+
+Gary Masinga
