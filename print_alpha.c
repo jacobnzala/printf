@@ -1,4 +1,5 @@
 #include "main.h"
+
 /**
  * print_string - loops through a string and prints
  * every character
@@ -7,7 +8,7 @@
  * if a flag is passed to _printf
  * Return: number of char printed
  */
-int print_string(va_list l, jacs *f)
+int print_string(va_list l, mods *f)
 {
 	char *s = va_arg(l, char *);
 
@@ -24,7 +25,7 @@ int print_string(va_list l, jacs *f)
  * if a flag is passed to _printf
  * Return: number of char printed
  */
-int print_char(va_list l, jacs *f)
+int print_char(va_list l, mods *f)
 {
 	(void)f;
 	return (_putchar(va_arg(l, int)));
