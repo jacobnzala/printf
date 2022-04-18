@@ -1,43 +1,90 @@
 #include "main.h"
 
 /**
- * _printf - produces output according to a format
- * @format: format string containing the characters and the specifiers
- * Description: this function will call the get_print() function that will
- * determine which printing function to call depending on the conversion
- * specifiers contained into fmt
- * Return: length of the formatted output string
+ * printIdentifiers - prints special characters
+ * @next: character after the %
+ * @arg: argument for the indentifier
+ * Return: the number of characters printed
+ * (excluding the null byte used to end output to strings)
  */
+
+int printIdentifiers(char next, va_list arg)
+{
+	int functsIndex;
+
+	identifierStruct functs[] = {
+		{"c", print_char},
+		{"s", print_str},
+		{"d", print_int},
+		{"i", print_int},
+		{"u", print_unsigned},
+		{"b", print_unsignedToBinary},
+		{"o", print_oct},
+		{"x", print_hex},
+		{"X", print_HEX},
+		{"S", print_STR},
+		{NULL, NULL}
+	};
+
+	for (functsIndex = 0; functs[functsIndex].indentifier != NULL; functsIndex++)
+	{
+		if (functs[functsIndex].indentifier[0] == next)
+			return (functs[functsIndex].printer(arg));
+	}
+	return (0);
+}
+
+/**
+ * _printf - mimic printf from stdio
+ * Description: produces output according to a format
+ * write output to stdout, the standard output stream
+ * @format: character string composed of zero or more directives
+ *
+ * Return: the number of characters printed
+ * (excluding the null byte used to end output to strings)
+ * return -1 for incomplete identifier error
+ */
+
 int _printf(const char *format, ...)
 {
-	register short len = 0;
-	int (*printFunc)(va_list, mods *);
-	mods prefixes = PF_INIT;
-	const char *p = format;
-	va_list arguments;
+	unsigned int i;
+	int identifierPrinted = 0, charPrinted = 0;
+	va_list arg;
 
-	va_start(arguments, format);
-	assert(invalidInputs(p));
-	for (; *p; p++)
+	va_start(arg, format);
+	if (format == NULL)
+		return (-1);
+
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (*p == '%')
+		if (format[i] != '%')
 		{
-			p++;
-			if (*p == '%')
-			{
-				len += _putchar('%');
-				continue;
-			}
-			while (get_flags(*p, &prefixes))
-				p++;
-			printFunc = get_print(*p);
-			len += (printFunc)
-				? printFunc(arguments, &prefixes)
-				: _printf("%%%c", *p);
-		} else
-			len += _putchar(*p);
+			_putchar(format[i]);
+			charPrinted++;
+			continue;
+		}
+		if (format[i + 1] == '%')
+		{
+			_putchar('%');
+			charPrinted++;
+			i++;
+			continue;
+		}
+		if (format[i + 1] == '\0')
+			return (-1);
+
+		identifierPrinted = printIdentifiers(format[i + 1], arg);
+		if (identifierPrinted == -1 || identifierPrinted != 0)
+			i++;
+		if (identifierPrinted > 0)
+			charPrinted += identifierPrinted;
+
+		if (identifierPrinted == 0)
+		{
+			_putchar('%');
+			charPrinted++;
+		}
 	}
-	_putchar(FLUSH);
-	va_end(arguments);
-	return (len);
+	va_end(arg);
+	return (charPrinted);
 }
