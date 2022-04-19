@@ -8,6 +8,8 @@ Applying variadic functions to a big project while learning to collaborate with 
 
 printf function and all its complexities
 
+And the project is designed in a way that learners will have to do intensive research and apply all we've learned so far
+
 
 Authors:
 
