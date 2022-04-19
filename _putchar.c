@@ -1,10 +1,10 @@
-#include <unistd.h>
+#include "main.h"
 /**
- * _putchar - writes the character c to stdout
- * @c: the character to print
- * Return: 0 on success and -1 error and errno is set appropiately
+ * ch - function to return char
+ * @character: list given
+ * Return: number of char printed
  */
-int _putchar(char c)
+int ch(va_list character)
 {
-	return (write(1, &c, 1));
+	return (_putchar(va_arg(character, int)));
 }
