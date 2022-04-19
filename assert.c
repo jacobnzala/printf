@@ -1,19 +1,18 @@
 #include "main.h"
 /**
- * invalidInputs - test user inputs
- * @p: input string
- * Return: true or false
+ * _strlen - gets string length
+ * @string: string
+ * Return: length (int)
  */
-_Bool invalidInputs(const char *p)
+
+int _strlen(char *string)
 {
-	
-	if (!p)
-		return (false);
-	
-	if (*p == '%' && !*(p + 1))
-		return (false);
-	
-	if (*p == '%' && *(p + 1) == ' ' && !*(p + 2))
-		return (false);
-	return (true);
+	int length;
+
+	length = 0;
+	while (string[length] != '\0')
+	{
+		length++;
+	}
+	return (length);
 }
