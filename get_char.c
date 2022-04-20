@@ -1,4 +1,4 @@
-#include "main.h"
+#include "main_h"
 /**
  * ch - function to return char
  * @character: list given
