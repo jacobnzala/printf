@@ -1,6 +1,5 @@
 #include "main.h"
 
-
 /**
  * print_op - function to check which specifier to print
  * @format: string being passed
