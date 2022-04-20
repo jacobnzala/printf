@@ -1,4 +1,4 @@
-#include "main.h"
+#include "main_h"
 /**
  * _bin - function to print binary
  * @bin: list being passed
