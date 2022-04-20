@@ -1,110 +1,50 @@
 #include "main.h"
-
 /**
- * print_bigS - Non printable characters
- * (0 < ASCII value < 32 or >= 127) are
- * printed this way: \x, followed by the ASCII code
- * value in hexadecimal (upper case - always 2 characters)
- * @l: va_list arguments from _printf
- * @f: pointer to the struct flags that determines
- * if a flag is passed to _printf
- * Return: number of char printed
+ * _hex_str - converts the number from base 10 to hex
+ * @n: number to be converted
+ * @hex: base of 16 being passed
+ * @alpha: Char 'A' to 'F' or 'a' to 'f'
+ * Return: number of chars printed
  */
-int print_bigS(va_list l, jacs *f)
+int _hex_str(unsigned int n, unsigned int hex, char alpha)
 {
-	register short len = 0;
-	char *res, *s = va_arg(l, char *);
+	unsigned int a = n % hex;
+	unsigned int b = n / hex;
+	char c;
 
-	(void)f;
-	if (!s)
-		return (_puts(NULL_STRING));
-	for (; *s; s++)
+	if (a > 10)
+		c = (a - 10) + alpha;
+	else
+		c = a + '0';
+	if (b == 0)
 	{
-		if (isNonAlphaNumeric(*s))
-		{
-			count += _puts("\\x");
-			res = convert(*s, 16, 0);
-			if (!res[1])
-				len += _putchar('0');
-			len += _puts(res);
-		}
-		else
-			len += _putchar(*s);
+		return (_putchar(c));
 	}
-	return (len);
-}
-
-/**
- * isNonAlphaNumeric - determines if char is a non-
- * alphanumeric char on ASCII table
- * @c: input char
- * Return: true or false
- */
-_Bool isNonAlphaNumeric(char c)
-{
-	return ((c > 0 && c < 32) || c >= 127);
-}
-
-/**
- * print_rev - prints a string in reverse
- * @l: argument from _printf
- * @f: pointer to the struct flags that determines
- * if a flag is passed to _printf
- * Return: length of the printed string
- */
-int print_rev(va_list l, jacs *f)
-{
-	register short len = 0, j;
-	char *s = va_arg(l, char *);
-
-	(void)f;
-	if (!s)
-		s = NULL_STRING;
-	while (s[len])
-		len++;
-	for (j = len - 1; j >= 0; j--)
-		_putchar(s[j]);
-	return (len);
-}
-
-/**
- * print_rot13 - prints a string using rot13
- * @l: list of arguments from _printf
- * @f: pointer to the struct flags that determines
- * if a flag is passed to _printf
- * Return: length of the printed string
- */
-int print_rot13(va_list l, jacs *f)
-{
-	register short i, j;
-	char rot13[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char ROT13[] = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
-	char *s = va_arg(l, char *);
-
-	(void)f;
-	for (j = 0; s[j]; j++)
+	if (b < hex)
 	{
-		if (s[j] < 'A' || (s[j] > 'Z' && s[j] < 'a') || s[j] > 'z')
-			_putchar(s[j]);
-		else
-		{
-			for (i = 0; i <= 52; i++)
-				if (s[j] == rot13[i])
-					_putchar(ROT13[i]);
-		}
+		if (b > 10)
+			return (_putchar(b - 10 + alpha) + _putchar(c));
+		return (_putchar(b + '0') + _putchar(c));
 	}
-	return (j);
+	return (_hex_str(b, hex, alpha) + _putchar(c));
 }
 
 /**
- * print_percent - prints a percent
- * @l: va_list arguments from _printf
- * @f: pointer to the struct flags in which we turn the flags on
- * Return: number of char printed
+ * _hex_l - printing lower case hexa
+ * @hexa: argument recieved
+ * Return: no of char printed
  */
-int print_percent(va_list l, jacs *f)
+int _hex_l(va_list hexa)
 {
-	(void)l;
-	(void)f;
-	return (_putchar('%'));
+	return (_hex_str(va_arg(hexa, unsigned int), 16, 'a'));
+}
+
+/**
+ * _hex_u - printing upper case hexa
+ * @hexa: argument recieved
+ * Return: no. of char printed
+ */
+int _hex_u(va_list hexa)
+{
+	return (_hex_str(va_arg(hexa, unsigned int), 16, 'A'));
 }
